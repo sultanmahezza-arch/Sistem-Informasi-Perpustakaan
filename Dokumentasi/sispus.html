@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Perpustakaan (SIPUS)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #219150;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+
+        table th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .badge-tersedia {
+            background-color: #27ae60;
+        }
+
+        .badge-dipinjam {
+            background-color: #e74c3c;
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .btn-pinjam {
+            background-color: #f39c12;
+        }
+
+        .btn-kembali {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📚 Sistem Informasi Perpustakaan (SIPUS)</h1>
+        <p>Manajemen Data Buku & Peminjaman</p>
+    </header>
+
+    <div class="container">
+        <!-- Form Tambah Buku -->
+        <div class="card">
+            <h2>Tambah Buku Baru</h2>
+            <form id="formBuku">
+                <div class="form-group">
+                    <label for="judul">Judul Buku</label>
+                    <input type="text" id="judul" placeholder="Contoh: Aldy Peramal Masa Depan" required>
+                </div>
+                <div class="form-group">
+                    <label for="penulis">Penulis</label>
+                    <input type="text" id="penulis" placeholder="Contoh: Rijal Huzaimi" required>
+                </div>
+                <div class="form-group">
+                    <label for="kategori">Kategori</label>
+                    <select id="kategori" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        <option value="Novel">Novel</option>
+                        <option value="Teknologi">Teknologi</option>
+                        <option value="Sains">Sains</option>
+                        <option value="Sejarah">Sejarah</option>
+                        <option value="Pemograman Terstruktur">Pemograman Terstruktur</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Simpan Buku</button>
+            </form>
+        </div>
+
+        <!-- Daftar Buku -->
+        <div class="card">
+            <h2>Daftar Koleksi Buku</h2>
+            <table id="tabelBuku">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>Penulis</th>
+                        <th>Kategori</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="listBuku">
+                    <!-- Data akan muncul di sini secara dinamis -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data awal buku (contoh)
+        let daftarBuku = [
+            { id: 1, judul: "Pemrograman Web HTML & CSS", penulis: "John Doe", kategori: "Teknologi", dipinjam: false },
+            { id: 2, judul: "Bumi Manusia", penulis: "Pramoedya A. Toer", kategori: "Novel", dipinjam: true },
+            { id: 3, judul: "Aldy Peramal Masa Depan", penulis: "Rijal Huzaimi", kategori: "Novel", dipinjam: false},
+            { id: 4, judul: "Project Menu Pada Java Visual Studio Code", penulis: "Alfarest", kategori: "Pemograman Terstruktur", dipinjam: true },
+            { id: 5, judul: "Anatomi Tubuh Manusia", penulis: "Hezza", kategori: "sains", dipinjam: false},
+            { id: 6, judul: "Sejarah Teknologi Informasi", penulis: "Yura", kategori: "Sejarah", dipinjam: false },
+            { id: 7, judul: "Pemograman Berorientasi Objek", penulis: "Arya", kategori: "Pemograman Terstruktur", dipinjam: true },
+            { id: 8, judul: "Sains dan Teknologi Masa Depan", penulis: "Aldy Hironimus", kategori: "Sains", dipinjam: false },
+            { id: 9, judul: "Pemograman Ptyon", penulis: "Rijal Huzaimi", kategori: "Pemograman Terstruktur", dipinjam: true },
+        ];
+
+        // Fungsi menampilkan data buku ke tabel
+        function tampilkanBuku() {
+            const listBukuElement = document.getElementById('listBuku');
+            listBukuElement.innerHTML = '';
+
+            daftarBuku.forEach((buku, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${buku.judul}</td>
+                    <td>${buku.penulis}</td>
+                    <td>${buku.kategori}</td>
+                    <td>
+                        <span class="badge ${buku.dipinjam ? 'badge-dipinjam' : 'badge-tersedia'}">
+                            ${buku.dipinjam ? 'Dipinjam' : 'Tersedia'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-action ${buku.dipinjam ? 'btn-kembali' : 'btn-pinjam'}" onclick="toggleStatus(${buku.id})">
+                            ${buku.dipinjam ? 'Kembalikan' : 'Pinjam'}
+                        </button>
+                    </td>
+                `;
+                listBukuElement.appendChild(tr);
+            });
+        }
+
+        // Fungsi menambah buku baru
+        document.getElementById('formBuku').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const judul = document.getElementById('judul').value;
+            const penulis = document.getElementById('penulis').value;
+            const kategori = document.getElementById('kategori').value;
+
+            const bukuBaru = {
+                id: Date.now(),
+                judul: judul,
+                penulis: penulis,
+                kategori: kategori,
+                dipinjam: false
+            };
+
+            daftarBuku.push(bukuBaru);
+            tampilkanBuku();
+
+            // Reset form
+            this.reset();
+        });
+
+        // Fungsi ubah status pinjam/kembali
+        function toggleStatus(id) {
+            const buku = daftarBuku.find(b => b.id === id);
+            if (buku) {
+                buku.dipinjam = !buku.dipinjam;
+                tampilkanBuku();
+            }
+        }
+
+        // Tampilkan data saat pertama kali dimuat
+        tampilkanBuku();
+    </script>
+</body>
+</html>
