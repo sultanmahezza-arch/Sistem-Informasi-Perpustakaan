@@ -42,10 +42,10 @@ Seluruh dokumen pendukung perancangan sistem disimpan di dalam folder `Dokumenta
    [Tulis deskripsi singkat isi dokumennya]
 
 ## 👨‍💻 Identitas Penulis
-* **Nama:** [Tulis Nama Lengkap Kamu]
-* **NIM:** [Tulis NIM/NPM Kamu]
+* **Nama:** [Sultanullah Mahezza Priono]
+* **NIM:** [2615354009]
 * **Program Studi:** Teknologi Rekayasa Perangkat Lunak
-* **Instansi:** [Tulis Nama Kampus Kamu]
+* **Instansi:** [Politeknik Negeri Bali]
 
 ---
 *Dibuat menggunakan GitHub Markdown.*
