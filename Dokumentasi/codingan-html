@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIMPus — Dasbor Pustakawan</title>
+<style>
+:root{--navy:#142f50;--blue:#2563eb;--bg:#f3f6fb;--line:#dfe7f1;--text:#172b4d;--muted:#64748b;--green:#15803d;--red:#b91c1c;--orange:#b45309}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#eaf2ff,#f8fafc)}
+.login-card{width:min(420px,100%);background:#fff;padding:30px;border-radius:18px;box-shadow:0 15px 45px #17345b20}.logo{font-size:42px;text-align:center}.login-card h1{text-align:center;margin:8px 0;color:var(--navy)}.muted{color:var(--muted);font-size:13px;line-height:1.6}.login-card .muted{text-align:center}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:13px;font-weight:bold}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;background:white}.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:bold}.btn-primary{background:var(--blue);color:white}.btn-primary:hover{background:#1d4ed8}.btn-light{background:#e8f0fc;color:var(--navy)}.btn-danger{background:#fee2e2;color:var(--red)}.btn-small{padding:7px 9px;font-size:12px}.full{width:100%}.demo{background:#eff6ff;padding:12px;border-radius:9px;font-size:12px;line-height:1.7;margin-top:15px}
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}.sidebar{background:var(--navy);color:white;padding:22px 14px}.brand{display:flex;gap:10px;align-items:center;padding:0 8px 25px}.brand .symbol{font-size:30px}.brand h2{font-size:17px;margin:0}.brand small{color:#c7d7ec;font-size:11px}.nav-title{font-size:10px;color:#9fb6d4;letter-spacing:1.5px;font-weight:bold;padding:12px}.nav-btn{width:100%;border:0;border-radius:8px;background:transparent;color:#dce8f8;padding:12px;text-align:left;margin:3px 0}.nav-btn:hover,.nav-btn.active{background:#2a4c74;color:white}.nav-btn span{display:inline-block;width:28px}
+main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:12px}.topbar h1{font-size:20px;margin:0}.topbar p{font-size:12px;color:var(--muted);margin:5px 0 0}.userbox{display:flex;align-items:center;gap:12px;font-size:13px}.avatar{display:grid;place-items:center;width:38px;height:38px;background:#dbeafe;border-radius:50%;font-weight:bold;color:var(--navy)}
+.content{padding:24px;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}.page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.page-heading h2{margin:0;font-size:23px}.page-heading p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;box-shadow:0 4px 16px #18365a08}.card{padding:18px}.card .label{font-size:12px;color:var(--muted)}.card strong{display:block;font-size:27px;margin-top:8px}.card .emoji{float:right;font-size:24px}.panel{padding:20px;margin-bottom:18px}.panel h3{font-size:16px;margin:0 0 16px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}.field.fullrow{grid-column:1/-1}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{padding:10px;border:1px solid #cbd5e1;border-radius:8px;min-width:180px}.toolbar input{flex:1}
+.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:12px 10px;text-align:left;border-bottom:1px solid #edf1f6;vertical-align:top}th{font-size:11px;color:var(--muted);text-transform:uppercase;background:#f8fafc;letter-spacing:.4px}tbody tr:last-child td{border-bottom:0}.pill{display:inline-block;padding:5px 8px;border-radius:20px;font-size:11px;font-weight:bold;white-space:nowrap}.green{background:#dcfce7;color:#166534}.orange{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#991b1b}.blue{background:#dbeafe;color:#1d4ed8}.empty{text-align:center;padding:24px;color:var(--muted)}
+.notice{padding:12px 14px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-radius:9px;font-size:12px;line-height:1.6;margin-bottom:16px}.alert-red{padding:12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;margin:12px 0;font-size:13px}.alert-green{padding:12px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;margin:12px 0;font-size:13px}
+.report-actions{display:flex;gap:8px;flex-wrap:wrap}.footer{text-align:center;color:var(--muted);font-size:11px;padding:15px}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:700px){.app{grid-template-columns:1fr}.sidebar{padding:12px}.brand{padding:0 8px 12px}.nav-title{display:none}.nav-list{display:flex;overflow-x:auto;gap:4px}.nav-btn{width:auto;white-space:nowrap;padding:10px}.topbar{padding:0 15px}.content{padding:16px 12px}.form-grid{grid-template-columns:1fr}.field.fullrow{grid-column:auto}.cards{gap:9px}.card{padding:13px}.card strong{font-size:22px}.userbox .usertext{display:none}.page-heading{align-items:flex-start;flex-direction:column}}
+@media print{.sidebar,.topbar,.no-print,.footer{display:none!important}.app{display:block}.content{padding:0}.page{display:none!important}.page.active{display:block!important}.panel,.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<section id="login-screen" class="login-wrap">
+  <form id="login-form" class="login-card">
+    <div class="logo">📚</div><h1>SIMPus</h1>
+    <p class="muted">Sistem Informasi Manajemen Perpustakaan<br>Portal Pustakawan / Administrator</p>
+    <div class="field"><label for="username">Nama Pengguna</label><input id="username" autocomplete="username" required placeholder="Masukkan nama pengguna"></div>
+    <div class="field"><label for="password">Kata Sandi</label><input id="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi"></div>
+    <button class="btn btn-primary full" type="submit">Masuk</button>
+    <div id="login-error" class="alert-red hidden"></div>
+    <div class="demo"><strong>Akun demo pembelajaran</strong><br>Nama pengguna: <code>pustakawan</code><br>Kata sandi: <code>perpus123</code><br><span style="color:#92400e">Jangan gunakan akun demo ini untuk sistem nyata.</span></div>
+  </form>
+</section>
+
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="symbol">📚</div><div><h2>SIMPus</h2><small>Panel Pustakawan</small></div></div>
+    <div class="nav-title">MENU ADMINISTRASI</div>
+    <nav class="nav-list">
+      <button class="nav-btn active" data-page="dashboard"><span>▦</span>Dashboard</button>
+      <button class="nav-btn" data-page="books"><span>📖</span>Katalog Buku</button>
+      <button class="nav-btn" data-page="members"><span>👥</span>Manajemen Anggota</button>
+      <button class="nav-btn" data-page="circulation"><span>⇄</span>Sirkulasi</button>
+      <button class="nav-btn" data-page="reports"><span>▤</span>Laporan</button>
+    </nav>
+    <div style="padding:18px 10px;color:#c7d7ec;font-size:11px;line-height:1.6">Demo lokal untuk pembelajaran. Data tersimpan di browser perangkat ini.</div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div><h1 id="top-title">Dashboard Pustakawan</h1><p id="today"></p></div>
+      <div class="userbox"><div class="avatar">P</div><div class="usertext"><strong>Pustakawan</strong><div style="font-size:11px;color:#64748b">Administrator demo</div></div><button class="btn btn-light no-print" id="logout">Keluar</button></div>
+    </header>
+    <div class="content">
+      <section id="page-dashboard" class="page active">
+        <div class="page-heading"><div><h2>Ringkasan Perpustakaan</h2><p>Pantau koleksi, anggota, dan transaksi harian.</p></div><button class="btn btn-primary no-print" onclick="showPage('books')">＋ Tambah Buku</button></div>
+        <div class="cards">
+          <div class="card"><span class="emoji">📚</span><div class="label">Judul Buku</div><strong id="stat-books">0</strong></div>
+          <div class="card"><span class="emoji">👥</span><div class="label">Anggota</div><strong id="stat-members">0</strong></div>
+          <div class="card"><span class="emoji">📤</span><div class="label">Pinjaman Aktif</div><strong id="stat-loans">0</strong></div>
+          <div class="card"><span class="emoji">💰</span><div class="label">Denda Tercatat</div><strong id="stat-fines">Rp0</strong></div>
+        </div>
+        <div class="panel"><h3>Transaksi Terbaru</h3><div class="table-wrap"><table><thead><tr><th>Anggota</th><th>Buku</th><th>Tanggal Pinjam</th><th>Status</th></tr></thead><tbody id="recent-table"></tbody></table></div></div>
+      </section>
+
+      <section id="page-books" class="page">
+        <div class="page-heading"><div><h2>Manajemen Data Buku</h2><p>Tambah koleksi, atur nomor seri, kategori, stok, dan lokasi rak.</p></div></div>
+        <div class="panel"><h3>Tambah Buku Baru</h3>
+          <form id="book-form"><div class="form-grid">
+            <div class="field"><label>Judul Buku <span style="color:red">*</span></label><input id="b-title" required></div>
+            <div class="field"><label>Pengarang <span style="color:red">*</span></label><input id="b-author" required></div>
+            <div class="field"><label>Nomor Seri / Barcode</label><input id="b-barcode" placeholder="Kosongkan untuk dibuat otomatis"></div>
+            <div class="field"><label>ISBN</label><input id="b-isbn"></div>
+            <div class="field"><label>Kategori <span style="color:red">*</span></label><select id="b-category"><option>Fiksi</option><option>Nonfiksi</option><option>Teknologi</option><option>Pendidikan</option><option>Sejarah</option><option>Jurnal</option><option>Skripsi</option><option>E-book</option><option>Lainnya</option></select></div>
+            <div class="field"><label>Jumlah Salinan <span style="color:red">*</span></label><input id="b-stock" type="number" min="1" value="1" required></div>
+            <div class="field"><label>Lokasi Fisik / Rak</label><input id="b-location" placeholder="Contoh: Rak A1"></div>
+            <div class="field"><label>Jenis Koleksi</label><select id="b-type"><option>Cetak</option><option>Digital</option></select></div>
+          </div><div class="form-actions"><button class="btn btn-primary">Simpan Data</button></div></form>
+        </div>
+        <div class="panel"><h3>Katalog Buku</h3><div class="toolbar"><input id="book-search" placeholder="Cari judul, pengarang, barcode..."><select id="book-type-filter"><option value="">Semua jenis</option><option>Cetak</option><option>Digital</option></select></div><div class="table-wrap"><table><thead><tr><th>Buku</th><th>Barcode / ISBN</th><th>Kategori</th><th>Lokasi</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="books-table"></tbody></table></div></div>
+      </section>
+
+      <section id="page-members" class="page">
+        <div class="page-heading"><div><h2>Manajemen Anggota</h2><p>Daftarkan anggota dan cetak kartu anggota sederhana.</p></div></div>
+        <div class="panel"><h3>Tambah Anggota Baru</h3>
+          <form id="member-form"><div class="form-grid">
+            <div class="field"><label>Nomor Identitas (NIS/NIM/KTP) <span style="color:red">*</span></label><input id="m-number" required></div>
+            <div class="field"><label>Nama Lengkap <span style="color:red">*</span></label><input id="m-name" required></div>
+            <div class="field"><label>Nomor Kontak</label><input id="m-phone" placeholder="Nomor telepon"></div>
+            <div class="field"><label>Kelas / Jurusan</label><input id="m-class" placeholder="Contoh: TI-2A"></div>
+            <div class="field fullrow"><label>Email</label><input id="m-email" type="email"></div>
+          </div><div class="form-actions"><button class="btn btn-primary">Simpan Anggota</button></div></form>
+        </div>
+        <div class="panel"><h3>Daftar Anggota</h3><div class="toolbar"><input id="member-search" placeholder="Cari nama atau nomor identitas..."></div><div class="table-wrap"><table><thead><tr><th>Nomor Identitas</th><th>Nama</th><th>Kontak</th><th>Kelas/Jurusan</th><th>Aksi</th></tr></thead><tbody id="members-table"></tbody></table></div></div>
+      </section>
+
+      <section id="page-circulation" class="page">
+        <div class="page-heading"><div><h2>Transaksi Sirkulasi</h2><p>Peminjaman dan pengembalian berdasarkan ID atau barcode.</p></div></div>
+        <div class="notice">Aturan demo: masa pinjam 7 hari, denda keterlambatan Rp1.000 per hari, dan kuota maksimal 3 pinjaman aktif per anggota. Ubah aturan sesuai kebijakan perpustakaan.</div>
+        <div class="grid2">
+          <div class="panel"><h3>Peminjaman Baru</h3><form id="loan-form">
+            <div class="field"><label>ID Anggota / Nomor Identitas</label><input id="loan-member" list="member-options" placeholder="Ketik nomor atau nama anggota" required><datalist id="member-options"></datalist></div>
+            <div class="field"><label>Barcode / Nomor Seri Buku</label><input id="loan-book" list="book-options" placeholder="Ketik barcode atau judul buku" required><datalist id="book-options"></datalist></div>
+            <div id="loan-preview" class="muted">Pilih anggota dan buku untuk melihat informasi.</div>
+            <button class="btn btn-primary">Proses Pinjaman</button>
+          </form></div>
+          <div class="panel"><h3>Pengembalian Buku</h3><form id="return-form">
+            <div class="field"><label>Barcode / Nomor Seri Buku</label><input id="return-barcode" required placeholder="Masukkan barcode buku yang kembali"></div>
+            <div id="return-preview" class="muted">Masukkan barcode untuk mencari transaksi aktif.</div>
+            <button class="btn btn-primary">Selesaikan Transaksi</button>
+          </form><p class="muted">Sistem mencari pinjaman aktif melalui barcode buku. Denda dihitung saat pengembalian dikonfirmasi.</p></div>
+        </div>
+        <div class="panel"><h3>Riwayat Sirkulasi</h3><div class="toolbar"><input id="loan-search" placeholder="Cari anggota, judul, atau barcode..."><select id="loan-status"><option value="">Semua status</option><option value="active">Dipinjam</option><option value="returned">Dikembalikan</option><option value="overdue">Terlambat</option></select></div><div class="table-wrap"><table><thead><tr><th>Anggota / Buku</th><th>Pinjam</th><th>Jatuh Tempo</th><th>Status</th><th>Denda</th><th>Aksi</th></tr></thead><tbody id="loans-table"></tbody></table></div></div>
+      </section>
+
+      <section id="page-reports" class="page">
+        <div class="page-heading"><div><h2>Laporan Sirkulasi</h2><p>Filter rentang tanggal dan cetak atau ekspor rekap.</p></div></div>
+        <div class="panel no-print"><h3>Filter Laporan</h3><div class="form-grid">
+          <div class="field"><label>Tanggal Mulai</label><input type="date" id="report-start"></div>
+          <div class="field"><label>Tanggal Akhir</label><input type="date" id="report-end"></div>
+          <div class="field fullrow"><label>Jenis Laporan</label><select id="report-type"><option value="loans">Laporan Peminjaman</option><option value="fines">Laporan Denda</option><option value="out">Laporan Stok Habis</option></select></div>
+        </div><div class="form-actions"><button class="btn btn-primary" id="show-report">Tampilkan Data</button><button class="btn btn-light" onclick="window.print()">Cetak / Simpan PDF</button><button class="btn btn-light" onclick="exportCSV()">Unduh CSV (Excel)</button><button class="btn btn-light" onclick="exportJSON()">Backup JSON</button></div></div>
+        <div class="panel"><h3 id="report-title">Laporan Peminjaman</h3><div id="report-summary" class="muted"></div><div class="table-wrap"><table><thead id="report-head"></thead><tbody id="report-body"></tbody></table></div></div>
+      </section>
+      <div class="footer">SIMPus · Prototipe pembelajaran pustakawan · Penyimpanan lokal browser</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY = "simpus_admin_demo_v2";
+const today = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const addDays = (date,n) => { const d=new Date(date+"T12:00:00"); d.setDate(d.getDate()+n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const fmtDate = d => d ? new Date(d+"T12:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"short",year:"numeric"}) : "-";
+const money = n => new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initial = {books:[],members:[],loans:[],nextBook:1,nextMember:1,nextLoan:1};
+let db;
+try { db=JSON.parse(localStorage.getItem(STORAGE_KEY))||structuredClone(initial); } catch { db=JSON.parse(JSON.stringify(initial)); }
+let reportRows=[];
+
+document.getElementById("today").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+document.getElementById("login-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const u=document.getElementById("username").value.trim();
+  const p=document.getElementById("password").value;
+  if(u==="pustakawan" && p==="perpus123"){
+    sessionStorage.setItem("simpusDemoLogin","yes");
+    document.getElementById("login-screen").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("login-error").classList.add("hidden");
+    renderAll();
+  } else {
+    const error=document.getElementById("login-error");
+    error.textContent="Nama pengguna atau kata sandi salah.";
+    error.classList.remove("hidden");
+  }
+});
+function logout(){sessionStorage.removeItem("simpusDemoLogin");document.getElementById("app").classList.add("hidden");document.getElementById("login-screen").classList.remove("hidden");document.getElementById("password").value="";}
+document.getElementById("logout").addEventListener("click",logout);
+if(sessionStorage.getItem("simpusDemoLogin")==="yes"){document.getElementById("login-screen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(db));renderAll();}
+function showPage(name){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.page===name));
+  const titles={dashboard:"Dashboard Pustakawan",books:"Katalog Buku",members:"Manajemen Anggota",circulation:"Sirkulasi",reports:"Laporan"};
+  document.getElementById("top-title").textContent=titles[name];renderAll();
+}
+document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function renderAll(){renderDashboard();renderBooks();renderMembers();renderCirculation();renderReport();}
+document.getElementById("book-form").addEventListener("submit",e=>{
+  e.preventDefault();const title=document.getElementById("b-title").value.trim(),author=document.getElementById("b-author").value.trim(),stock=Number(document.getElementById("b-stock").value);
+  if(!title||!author||!Number.isInteger(stock)||stock<1){alert("Periksa data buku dan jumlah salinan.");return;}
+  const barcode=document.getElementById("b-barcode").value.trim()||"BK"+String(db.nextBook).padStart(5,"0");
+  if(db.books.some(b=>b.barcode.toLowerCase()===barcode.toLowerCase())){alert("Nomor seri/barcode sudah digunakan.");return;}
+  db.books.push({id:db.nextBook++,title,author,barcode,isbn:document.getElementById("b-isbn").value.trim(),category:document.getElementById("b-category").value,stock,available:stock,location:document.getElementById("b-location").value.trim()||"Belum ditentukan",type:document.getElementById("b-type").value});
+  e.target.reset();document.getElementById("b-stock").value=1;save();alert("Data buku berhasil disimpan.");
+});
+function renderBooks(){
+  const q=(document.getElementById("book-search")?.value||"").toLowerCase(),type=document.getElementById("book-type-filter")?.value||"";
+  const rows=db.books.filter(b=>(!type||b.type===type)&&[b.title,b.author,b.barcode,b.isbn].some(v=>String(v).toLowerCase().includes(q)));
+  document.getElementById("books-table").innerHTML=rows.length?rows.map(b=>`<tr><td><strong>${esc(b.title)}</strong><div class="muted">${esc(b.author)} · ${esc(b.type)}</div></td><td>${esc(b.barcode)}<div class="muted">${esc(b.isbn||"-")}</div></td><td>${esc(b.category)}</td><td>${esc(b.location)}</td><td>${b.available} / ${b.stock}${b.available===0?' <span class="pill red">Habis</span>':''}</td><td><button class="btn btn-danger btn-small" onclick="deleteBook(${b.id})">Hapus</button></td></tr>`).join(""):'<tr><td colspan="6" class="empty">Data buku tidak ditemukan.</td></tr>';
+  document.getElementById("book-options").innerHTML=db.books.map(b=>`<option value="${esc(b.barcode)}">${esc(b.title)} (${b.available} tersedia)</option>`).join("");
+}
+function deleteBook(id){if(db.loans.some(l=>l.bookId===id&&!l.returned)){alert("Buku masih dipinjam.");return;}if(confirm("Hapus data buku ini?")){db.books=db.books.filter(b=>b.id!==id);save();}}
+document.getElementById("member-form").addEventListener("submit",e=>{
+  e.preventDefault();const number=document.getElementById("m-number").value.trim();
+  if(db.members.some(m=>m.number.toLowerCase()===number.toLowerCase())){alert("Nomor identitas sudah terdaftar.");return;}
+  const member={id:db.nextMember++,number,name:document.getElementById("m-name").value.trim(),phone:document.getElementById("m-phone").value.trim(),className:document.getElementById("m-class").value.trim(),email:document.getElementById("m-email").value.trim()};
+  db.members.push(member);e.target.reset();save();if(confirm("Anggota berhasil disimpan. Cetak kartu anggota sekarang?"))printCard(member.id);
+});
+function renderMembers(){
+  const q=(document.getElementById("member-search")?.value||"").toLowerCase(),rows=db.members.filter(m=>[m.number,m.name,m.phone,m.className].some(v=>String(v).toLowerCase().includes(q)));
+  document.getElementById("members-table").innerHTML=rows.length?rows.map(m=>`<tr><td>${esc(m.number)}</td><td><strong>${esc(m.name)}</strong><div class="muted">${esc(m.email||"-")}</div></td><td>${esc(m.phone||"-")}</td><td>${esc(m.className||"-")}</td><td><button class="btn btn-light btn-small" onclick="printCard(${m.id})">Cetak Kartu</button> <button class="btn btn-danger btn-small" onclick="deleteMember(${m.id})">Hapus</button></td></tr>`).join(""):'<tr><td colspan="5" class="empty">Belum ada anggota.</td></tr>';
+  document.getElementById("member-options").innerHTML=db.members.map(m=>`<option value="${esc(m.number)}">${esc(m.name)}</option>`).join("");
+}
+function deleteMember(id){if(db.loans.some(l=>l.memberId===id&&!l.returned)){alert("Anggota masih memiliki pinjaman aktif.");return;}if(confirm("Hapus anggota ini?")){db.members=db.members.filter(m=>m.id!==id);save();}}
+function printCard(id){
+  const m=db.members.find(x=>x.id===id);if(!m)return;
+  const w=window.open("","_blank","width=600,height=450");if(!w){alert("Izinkan pop-up browser untuk mencetak kartu.");return;}
+  w.document.write(`<!DOCTYPE html><html><head><title>Kartu Anggota</title><style>body{font-family:Arial;padding:30px}.card{border:2px solid #15345b;border-radius:14px;padding:24px;width:400px}.head{background:#15345b;color:white;padding:14px;margin:-24px -24px 20px;border-radius:10px 10px 0 0}small{color:#555}</style></head><body><div class="card"><div class="head"><h2>SIMPus — Kartu Anggota</h2><small style="color:#fff">Sistem Informasi Manajemen Perpustakaan</small></div><h3>${esc(m.name)}</h3><p>Nomor Identitas: <b>${esc(m.number)}</b></p><p>Kelas/Jurusan: ${esc(m.className||"-")}</p><p>Kontak: ${esc(m.phone||"-")}</p><hr><p><small>Barcode teks / ID: ${esc(m.number)}</small></p></div><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+}
+function findMember(value){const v=value.trim().toLowerCase();return db.members.find(m=>m.number.toLowerCase()===v||m.name.toLowerCase()===v);}
+function findBook(value){const v=value.trim().toLowerCase();return db.books.find(b=>b.barcode.toLowerCase()===v||b.title.toLowerCase()===v);}
+function activeCount(memberId){return db.loans.filter(l=>l.memberId===memberId&&!l.returned).length;}
+function renderCirculation(){
+  const q=(document.getElementById("loan-search")?.value||"").toLowerCase(),filter=document.getElementById("loan-status")?.value||"";
+  const rows=[...db.loans].reverse().filter(l=>{
+    const m=db.members.find(x=>x.id===l.memberId),b=db.books.find(x=>x.id===l.bookId),late=!l.returned&&today()>l.due;
+    return [m?.name,b?.title,b?.barcode].some(v=>String(v||"").toLowerCase().includes(q))&&(!filter||(filter==="active"&&!l.returned)||(filter==="returned"&&l.returned)||(filter==="overdue"&&late));
+  });
+  document.getElementById("loans-table").innerHTML=rows.length?rows.map(l=>{
+    const m=db.members.find(x=>x.id===l.memberId),b=db.books.find(x=>x.id===l.bookId),late=!l.returned&&today()>l.due;
+    const fine=l.returned?l.fine:Math.max(0,Math.floor((new Date(today()+"T12:00:00")-new Date(l.due+"T12:00:00"))/86400000))*1000;
+    return `<tr><td><strong>${esc(m?.name||"Anggota")}</strong><div class="muted">${esc(b?.title||"Buku")} · ${esc(b?.barcode||"-")}</div></td><td>${fmtDate(l.borrowDate)}</td><td>${fmtDate(l.due)}</td><td><span class="pill ${l.returned?"green":late?"red":"orange"}">${l.returned?"Dikembalikan":late?"Terlambat":"Dipinjam"}</span></td><td>${money(fine)}</td><td>${l.returned?"—":`<button class="btn btn-primary btn-small" onclick="returnById(${l.id})">Kembalikan</button>`}</td></tr>`;
+  }).join(""):'<tr><td colspan="6" class="empty">Tidak ada transaksi yang cocok.</td></tr>';
+  const preview=document.getElementById("loan-preview");
+  const member=findMember(document.getElementById("loan-member").value),book=findBook(document.getElementById("loan-book").value);
+  preview.innerHTML=member&&book?`Anggota: <b>${esc(member.name)}</b> (${activeCount(member.id)}/3 pinjaman aktif). Buku: <b>${esc(book.title)}</b>, stok ${book.available}. Jatuh tempo: ${fmtDate(addDays(today(),7))}.`:"Masukkan ID/nama anggota dan barcode/judul buku.";
+}
+document.getElementById("loan-member").addEventListener("input",()=>{const m=findMember(document.getElementById("loan-member").value);document.getElementById("loan-preview").textContent=m?`Anggota ditemukan: ${m.name}. Pinjaman aktif ${activeCount(m.id)}/3.`:"Anggota belum ditemukan.";});
+document.getElementById("loan-book").addEventListener("input",()=>{const b=findBook(document.getElementById("loan-book").value);if(b)document.getElementById("loan-preview").textContent=`Buku ditemukan: ${b.title}. Stok tersedia: ${b.available}. Jatuh tempo: ${fmtDate(addDays(today(),7))}.`;});
+document.getElementById("loan-form").addEventListener("submit",e=>{
+  e.preventDefault();const m=findMember(document.getElementById("loan-member").value),b=findBook(document.getElementById("loan-book").value);
+  if(!m){alert("Anggota tidak ditemukan. Periksa nomor identitas atau nama.");return;}
+  if(!b){alert("Buku tidak ditemukan. Periksa barcode atau judul.");return;}
+  if(b.available<1){alert("Stok buku habis.");return;}
+  if(activeCount(m.id)>=3){alert("Kuota pinjaman anggota sudah penuh (maksimal 3).");return;}
+  b.available--;db.loans.push({id:db.nextLoan++,memberId:m.id,bookId:b.id,borrowDate:today(),due:addDays(today(),7),returned:false,returnDate:null,fine:0});
+  e.target.reset();save();alert("Pinjaman berhasil. Jatuh tempo: "+fmtDate(addDays(today(),7)));
+});
+document.getElementById("return-barcode").addEventListener("input",()=>{
+  const b=findBook(document.getElementById("return-barcode").value),p=b&&db.loans.find(l=>l.bookId===b.id&&!l.returned);
+  const el=document.getElementById("return-preview");
+  if(!b){el.textContent="Barcode belum cocok dengan katalog.";return;}
+  if(!p){el.textContent="Tidak ada pinjaman aktif untuk buku ini.";return;}
+  const m=db.members.find(x=>x.id===p.memberId),days=Math.max(0,Math.floor((new Date(today()+"T12:00:00")-new Date(p.due+"T12:00:00"))/86400000));
+  el.innerHTML=`Buku: <b>${esc(b.title)}</b><br>Peminjam: <b>${esc(m?.name||"-")}</b><br>Jatuh tempo: ${fmtDate(p.due)}<br>${days?`<div class="alert-red">Terlambat ${days} hari. Total denda: <b>${money(days*1000)}</b>.</div>`:'<div class="alert-green">Pengembalian tepat waktu. Tidak ada denda.</div>'}`;
+});
+document.getElementById("return-form").addEventListener("submit",e=>{
+  e.preventDefault();const b=findBook(document.getElementById("return-barcode").value),p=b&&db.loans.find(l=>l.bookId===b.id&&!l.returned);
+  if(!b||!p){alert("Transaksi aktif tidak ditemukan untuk barcode tersebut.");return;}
+  const days=Math.max(0,Math.floor((new Date(today()+"T12:00:00")-new Date(p.due+"T12:00:00"))/86400000)),fine=days*1000;
+  if(!confirm(`Selesaikan pengembalian ${b.title}?\\nTerlambat: ${days} hari\\nTotal denda: ${money(fine)}\\nPastikan denda telah dibayar atau dicatat sesuai aturan perpustakaan.`))return;
+  p.returned=true;p.returnDate=today();p.fine=fine;b.available=Math.min(b.stock,b.available+1);e.target.reset();document.getElementById("return-preview").textContent="Transaksi selesai.";save();alert("Pengembalian selesai. Buku kembali tersedia.");
+});
+function renderDashboard(){
+  document.getElementById("stat-books").textContent=db.books.length;document.getElementById("stat-members").textContent=db.members.length;document.getElementById("stat-loans").textContent=db.loans.filter(l=>!l.returned).length;document.getElementById("stat-fines").textContent=money(db.loans.reduce((s,l)=>s+(l.fine||0),0));
+  const rows=[...db.loans].reverse().slice(0,6);
+  document.getElementById("recent-table").innerHTML=rows.length?rows.map(l=>{const m=db.members.find(x=>x.id===l.memberId),b=db.books.find(x=>x.id===l.bookId);return `<tr><td>${esc(m?.name||"-")}</td><td>${esc(b?.title||"-")}</td><td>${fmtDate(l.borrowDate)}</td><td><span class="pill ${l.returned?"green":"orange"}">${l.returned?"Dikembalikan":"Dipinjam"}</span></td></tr>`;}).join(""):'<tr><td colspan="4" class="empty">Belum ada transaksi.</td></tr>';
+}
+function renderReport(){
+  const start=document.getElementById("report-start").value,end=document.getElementById("report-end").value,type=document.getElementById("report-type").value;
+  let head="",body="",title="";
+  if(type==="out"){
+    title="Laporan Stok Habis";reportRows=db.books.filter(b=>b.available===0).map(b=>({"Judul":b.title,"Pengarang":b.author,"Barcode":b.barcode,"Kategori":b.category,"Lokasi":b.location,"Stok":b.available}));
+    head="<tr><th>Judul</th><th>Pengarang</th><th>Barcode</th><th>Kategori</th><th>Lokasi</th><th>Stok</th></tr>";
+    body=reportRows.map(r=>`<tr><td>${esc(r.Judul)}</td><td>${esc(r.Pengarang)}</td><td>${esc(r.Barcode)}</td><td>${esc(r.Kategori)}</td><td>${esc(r.Lokasi)}</td><td>0</td></tr>`).join("");
+  }else{
+    let loans=db.loans.filter(l=>(!start||l.borrowDate>=start)&&(!end||l.borrowDate<=end));
+    if(type==="fines"){title="Laporan Denda";loans=loans.filter(l=>l.returned&&l.fine>0);reportRows=loans.map(l=>{const m=db.members.find(x=>x.id===l.memberId),b=db.books.find(x=>x.id===l.bookId);return {"Anggota":m?.name||"-","Buku":b?.title||"-","Tanggal Pinjam":l.borrowDate,"Tanggal Kembali":l.returnDate||"-","Denda":l.fine};});head="<tr><th>Anggota</th><th>Buku</th><th>Tanggal Pinjam</th><th>Tanggal Kembali</th><th>Denda</th></tr>";body=reportRows.map(r=>`<tr><td>${esc(r.Anggota)}</td><td>${esc(r.Buku)}</td><td>${fmtDate(r["Tanggal Pinjam"])}</td><td>${fmtDate(r["Tanggal Kembali"])}</td><td>${money(r.Denda)}</td></tr>`).join("");}
+    else{title="Laporan Peminjaman";reportRows=loans.map(l=>{const m=db.members.find(x=>x.id===l.memberId),b=db.books.find(x=>x.id===l.bookId);return {"Anggota":m?.name||"-","Buku":b?.title||"-","Barcode":b?.barcode||"-","Tanggal Pinjam":l.borrowDate,"Jatuh Tempo":l.due,"Status":l.returned?"Dikembalikan":today()>l.due?"Terlambat":"Dipinjam"};});head="<tr><th>Anggota</th><th>Buku</th><th>Barcode</th><th>Tanggal Pinjam</th><th>Jatuh Tempo</th><th>Status</th></tr>";body=reportRows.map(r=>`<tr><td>${esc(r.Anggota)}</td><td>${esc(r.Buku)}</td><td>${esc(r.Barcode)}</td><td>${fmtDate(r["Tanggal Pinjam"])}</td><td>${fmtDate(r["Jatuh Tempo"])}</td><td>${esc(r.Status)}</td></tr>`).join("");}
+  }
+  document.getElementById("report-title").textContent=title;document.getElementById("report-head").innerHTML=head;document.getElementById("report-body").innerHTML=body||`<tr><td colspan="6" class="empty">Tidak ada data untuk filter ini.</td></tr>`;document.getElementById("report-summary").textContent=`${reportRows.length} baris data${start?" · mulai "+fmtDate(start):""}${end?" · sampai "+fmtDate(end):""}.`;
+}
+document.getElementById("show-report").addEventListener("click",renderReport);
+["report-start","report-end","report-type"].forEach(id=>document.getElementById(id).addEventListener("change",renderReport));
+["book-search","book-type-filter","member-search","loan-search","loan-status"].forEach(id=>document.getElementById(id).addEventListener(id.includes("filter")||id==="loan-status"?"change":"input",renderAll));
+function exportCSV(){
+  const rows=reportRows;if(!rows.length){alert("Tidak ada data untuk diekspor.");return;}
+  const keys=Object.keys(rows[0]),csv=[keys.join(","),...rows.map(r=>keys.map(k=>`"${String(r[k]??"").replace(/"/g,'""')}"`).join(","))].join("\r\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});downloadBlob(blob,"laporan-simpus-"+today()+".csv");
+}
+function exportJSON(){downloadBlob(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),"backup-simpus-"+today()+".json");}
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);}
+renderAll();
+</script>
+</body>
+</html>
