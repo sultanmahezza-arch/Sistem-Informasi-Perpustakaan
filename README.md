@@ -36,8 +36,8 @@ Penggunaan teknologi *cloud* pada SIPUS sangat dibutuhkan dan memberikan banyak 
 ## 📁 Struktur Repository
 Seluruh dokumen pendukung perancangan sistem disimpan di dalam folder `Dokumentasi/`. Berikut adalah dokumen yang tersedia:
 
-1. **[Tulis Nama Dokumen 1mu, misal: Proposal_Perancangan_SIPUS.pdf]**
-   [Tulis deskripsi singkat isi dokumennya]
+1. **[Dokumentasi/SI_1A_TUGAS1_2615354009.pdf]**
+   [ file sementara ]
 2. **[Tulis Nama Dokumen 2mu, misal: Flowchart_dan_Use_Case.pdf]**
    [Tulis deskripsi singkat isi dokumennya]
 
